@@ -5,7 +5,7 @@
     display: inline-block;
     width: 100px; /* adjust as needed */
     height: 300px; /* adjust as needed */
-    background-color:
+  
 }
 
 #symbol11, #symbol12, #symbol13, #symbol21, #symbol22, #symbol23, #symbol31, #symbol32, #symbol33, #symbol41, #symbol42, #symbol43, #symbol51, #symbol52, #symbol53 {
@@ -22,4 +22,10 @@
 }
 
 
-
+#Navbar {
+    border: 10px solid black;
+    padding: 10px;  
+    margin: 10px;
+    display: inline-block;
+    font-weight: 500;
+}

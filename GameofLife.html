@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title> Hunters Game of Life </title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <h1> This is the start of the Game of Life. </h1>
+        <h2> This is a game that is based on John Conway's game of life. But with my own little spin and creative twist on it. </h2>
+        <h3> The rules are simple. </h3>
+    <!-- List the rules in a list html format. -->
+    <li> Any live cell with fewer than two live neighbors dies, as if by under population. </li>
+    <li> Any live cell with two or three live neighbors lives on to the next generation. </li>\
+    <li> Any live cell with more than three live neighbors dies, as if by overpopulation. </li>
+    <li> Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction. </li>
+    <canvas id="lifeCanvas" width="500" height="500"> </canvas>
+    <br>
+    <div id="LifeGameControls"> 
+        <button id="StartButton"> Start Game </button>
+        <button id="StopButton"> Stop Game </button>
+        <button id="RandomButton"> Random Button </button>
+        <button id="clearButton"> Clear Button</button>
+        <button id="logAliveButton"> Log Alive </button>
+        <label for="speedSlider">Simulation Speed:</label>
+        <input type="range" id="speedSlider" name="speedSlider" min="1" max="1000" value="500">
+        <
+    </div>
+    
+    <nav id="Navbar">
+        <ul>
+            <li> <a href="index.html"> Home </a> </li>
+            <li> <a href="about.html"> About </a> </li>
+            <li> <a href="GamePage.html"> Slot Machine </a> </li>
+            <li> <a href="IdleGame.html"> Idle Game </a> </li>
+            <li> <a href="GameofLife.html"> Game of Life </a> </li>
+
+    <script src="GameofLife.js"></script>
+    </body>
+</html>
