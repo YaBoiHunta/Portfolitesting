@@ -19,4 +19,7 @@ Okay, i think i figured out how to keep thing in sync with git, or atleast under
 
 
 
+## What i should improve.
+
+Definetly need to try and put every seperate file in there own folder. Clean it up by those means. I think that would be helpful.
 
