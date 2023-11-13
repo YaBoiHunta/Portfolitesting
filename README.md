@@ -10,10 +10,13 @@ this some day to get a job or something.
 
 ## Site
 
-I need to find a host or something.
+I need to find a host or something. Or atleast get a domain i guess?
+
+money ?$$?$??
 
 ## About
+Okay, i think i figured out how to keep thing in sync with git, or atleast understanding the basics of it. 
 
-Duh
+
 
 
