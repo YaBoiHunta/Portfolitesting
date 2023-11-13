@@ -1,35 +1,74 @@
 // Define an array of symbols
-var symbols = ["🍎", "🍊", "🍋", "🍒", "🍇", "🍉", "🍓", "🍑", "🍈", "🍌", "🍐", "🍍"];
+let symbols = ["🍎", "🍊", "🍋", "🍒", "🍇", "🍉", "🍓", "🍑", "🍈", "🍌", "🍐", "🍍"];
+// Define the initial balance, bet and win amount for the user.
 
 let currentBalance = 1000;
-let currentBet = 5;
-
-
-// For each reel
-for (var i = 1; i <= 5; i++) {
-    // For each symbol in the reel
-    for (var j = 1; j <= 3; j++) {
-        // Get the div element representing the symbol
-        var symbolDiv = document.getElementById("symbol" + i + j);
-        
-        // Randomly select a symbol from the array
-        var symbol = symbols[Math.floor(Math.random() * symbols.length)];
-        
-        // Set the innerHTML of the div to the selected symbol
-        symbolDiv.innerHTML = symbol;
-    }
-}
-
-
-
-// Get the HTML element where the balance is displayed
 let balanceElement = document.getElementById("BalanceNumber");
+let currentBet = 5; // Default bet amount
+let betNumberElement = document.getElementById("BetNumber");
 
-// Update the balance display initially
+// Define the winning combinations
+let winningCombinations = [
+    { symbols: ["🍎", "🍎", "🍎"], multiplier: 50 },
+    { symbols: ["🍊", "🍊", "🍊"], multiplier: 30 },
+    { symbols: ["🍋", "🍋", "🍋"], multiplier: 20 },
+    { symbols: ["🍒", "🍒", "🍒"], multiplier: 10 },
+    { symbols: ["🍇", "🍇", "🍇"], multiplier: 5 },
+    { symbols: ["🍉", "🍉", "🍉"], multiplier: 3 },
+    { symbols: ["🍓", "🍓", "🍓"], multiplier: 2 },
+    { symbols: [ "🍑", "🍑", "🍑"], multiplier: 1 },
+    { symbols: ["🍈", "🍈", "🍈"], multiplier: 1 },
+    { symbols: ["🍌", "🍌", "🍌"], multiplier: 1 },
+    { symbols: ["🍐", "🍐", "🍐"], multiplier: 1 },
+    { symbols: ["🍍", "🍍", "🍍"], multiplier: 1 },
+
+    // Add more winning combinations as needed
+];
+
+let winningMessageElement = document.getElementById("WinningMessage");
+let LosingMessageElement = document.getElementById("LosingMessage");
+
+// Update the balance and bet displays initially
+
 balanceElement.textContent = currentBalance;
+betNumberElement.textContent = currentBet;
 
-// Add a click event listener to the spin button
-spinButton.addEventListener('click', function() {
+// Define the spin button and its event listener
+let spinButton = document.getElementById("spinButton");
+spinButton.addEventListener('click', spin);
+
+// Define the bet buttons and their event listeners
+let doubleBetButton = document.getElementById("DoubleBet");
+doubleBetButton.addEventListener('click', function() {
+    currentBet *= 2;
+    betNumberElement.textContent = currentBet;
+});
+
+let halfBetButton = document.getElementById("HalfBet");
+halfBetButton.addEventListener('click', function() {
+    currentBet = Math.max(Math.floor(currentBet / 2), 5);
+    betNumberElement.textContent = currentBet;
+});
+
+let tripleBetButton = document.getElementById("TripleBet");
+tripleBetButton.addEventListener('click', function() {
+    currentBet *= 3;    
+    betNumberElement.textContent = currentBet;
+});
+
+let clearBetButton = document.getElementById("ClearBet");
+clearBetButton.addEventListener('click', function() {
+    currentBet = 5;
+    betNumberElement.textContent = currentBet;
+});
+
+// This is a spin function that can be used to spin the reels.
+
+/**
+ * Spins the slot machine reels and deducts the current bet amount from the user's balance.
+ * If the user's current balance is less than their current bet, the function returns immediately.
+ */
+function spin() {
     // If the user's current balance is less than their current bet, return from the function immediately
     if (currentBalance < currentBet) {
         alert("You can't afford your current bet.");
@@ -42,12 +81,6 @@ spinButton.addEventListener('click', function() {
     // Set the text content of the HTML element to the user's current balance
     balanceElement.textContent = currentBalance;
 
-    // Rest of the code...
-});
-
-
-// Add a click event listener to the spin button
-spinButton.addEventListener('click', function() {
     // For each reel
     for (let i = 1; i <= 5; i++) {
         // Start spinning the reel
@@ -69,7 +102,6 @@ spinButton.addEventListener('click', function() {
             }
         }, 100); // Interval in milliseconds
 
-        // Set a timeout with a delay of 2 seconds for the first reel, and an additional 1 second for each subsequent reel
         setTimeout(function() {
             // Stop the reel
             reel.classList.remove("spinning");
@@ -77,109 +109,72 @@ spinButton.addEventListener('click', function() {
             // Stop the interval that was randomizing the symbols on the reel
             clearInterval(intervalId);
 
-            // If it's the last reel, check the result after a short delay
+            // If this is the last reel, check if the user won
             if (i === 5) {
-                setTimeout(function() {
-                    // Get the symbols on the winning line
-                    let winningLineSymbols = [
-                        document.getElementById("symbol11").textContent,
-                        document.getElementById("symbol21").textContent,
-                        document.getElementById("symbol31").textContent,
-                    ];
-
-                    // Check if the symbols match any of the winning combinations
-                    for (let combination of winningCombinations) {
-                        if (JSON.stringify(winningLineSymbols) === JSON.stringify(combination.symbols)) {
-                            // Calculate the win amount
-                            let winAmount = currentBet * combination.multiplier;
-
-                            // Add the win amount to the user's balance
-                            currentBalance += winAmount;
-
-                            // Update the balance displayed on the screen
-                            balanceElement.textContent = currentBalance;
-
-                            break;
-                        }
-                    }
-                }, 1000); // Delay in milliseconds, adjust as needed
+                checkWin();
             }
-        }, 2000 + 1000 * (i - 1)); // Delay in milliseconds
+        }, 2000 + 1000 * (i - 1)); // Delay in milliseconds // Delay in milliseconds
     }
-});
+};
 
+function checkWin() {
+    // Get the symbols on the reels
+    let reelSymbols = [];
+    for (let i = 1; i <= 5; i++) {
+        let reel = [];
+        for (let j = 1; j <= 3; j++) {
+            let symbolDiv = document.getElementById("symbol" + i + j);
+            reel.push(symbolDiv.innerHTML);
+        }
+        reelSymbols.push(reel);
+    }
 
+    // Check for horizontal winning combinations
+    for (let combination of winningCombinations) {
+        for (let reel of reelSymbols) {
+            if (reel.join('') === combination.symbols.join('')) {
+                win(combination);
+                return;
+            }
+        }
+    }
 
-// Get the HTML element where the bet amount is displayed
-let betNumberElement = document.getElementById("BetNumber");
+    // Check for vertical winning combinations
+for (let i = 0; i < 3; i++) {
+    let column = [reelSymbols[0][i], reelSymbols[1][i], reelSymbols[2][i]];
+    for (let combination of winningCombinations) {
+        if (column.join('') === combination.symbols.join('')) {
+            win(combination);
+            return;
+        }
+    }
+}
 
-// Add a double bet button that will double the users bet for the next spin.
-// Get the double bet button element
-// Get the double bet button element
-let doubleBetButton = document.getElementById("DoubleBet");
+    // Check for diagonal winning combinations
+    let diagonals = [
+        [reelSymbols[0][0], reelSymbols[1][1], reelSymbols[2][2]],
+        [reelSymbols[0][2], reelSymbols[1][1], reelSymbols[2][0]]
+    ];
+    for (let combination of winningCombinations) {
+        for (let diagonal of diagonals) {
+            if (diagonal.join('') === combination.symbols.join('')) {
+                win(combination);
+                return;
+            }
+        }
+    }
 
-// Add a click event listener to the double bet button
-doubleBetButton.addEventListener('click', function() {
-    // Double the user's current bet
-    currentBet *= 2;
+    // If no winning combinations are found, show a message to the user
+    winningMessageElement.textContent = "You lost!";
+}
+function win(combination) {
+    // If a winning combination is found, multiply the user's bet by the multiplier and add it to their balance
+    let winAmount = currentBet * combination.multiplier;
+    currentBalance += winAmount;
 
-    // Update the HTML bet element with the new bet amount
-    betNumberElement.textContent = currentBet;
-});
+    // Update the balance displayed on the screen
+    balanceElement.textContent = currentBalance;
 
-// Create a half bet button that will half the users bet for the next spin.
-// Get the half bet button element
-let halfBetButton = document.getElementById("HalfBet");
-
-// Add a click event listener to the half bet button
-halfBetButton.addEventListener('click', function() {
-    // Half the user's current bet, but not less than 5
-    currentBet = Math.max(currentBet / 2, 5);
-
-    // Update the HTML bet element with the new bet amount
-    betNumberElement.textContent = currentBet;
-});
-
-// Create a triple bet button that will triple the users bet for the next spin.
-
-// Get the triple bet button element
-let tripleBetButton = document.getElementById("Triple_bet");
-
-// Add a click event listener to the triple bet button
-tripleBetButton.addEventListener('click', function() {
-    // Triple the user's current bet
-    currentBet *= 3;
-
-    // Update the HTML bet element with the new bet amount
-    betNumberElement.textContent = currentBet;
-});
-
-// Create a clear bet button that will reset the bet amount to 0 and update the Html element.
-
-// Get the clear bet button element
-let clearBetButton = document.getElementById("clearBet");
-
-// Add a click event listener to the clear bet button
-clearBetButton.addEventListener('click', function() {
-    currentBet = 5;
-    betNumberElement.textContent = currentBet;
-});
-
-// Define the winning combinations
-let winningCombinations = [
-    { symbols: ["🍎", "🍎", "🍎"], multiplier: 50 },
-    { symbols: ["🍊", "🍊", "🍊"], multiplier: 30 },
-    { symbols: ["🍋", "🍋", "🍋"], multiplier: 20 },
-    { symbols: ["🍒", "🍒", "🍒"], multiplier: 10 },
-    { symbols: ["🍇", "🍇", "🍇"], multiplier: 5 },
-    { symbols: ["🍉", "🍉", "🍉"], multiplier: 3 },
-    { symbols: ["🍓", "🍓", "🍓"], multiplier: 2 },
-    { symbols: [ "🍑", "🍑", "🍑"], multiplier: 1 },
-    { symbols: ["🍈", "🍈", "🍈"], multiplier: 1 },
-    { symbols: ["🍌", "🍌", "🍌"], multiplier: 1 },
-    { symbols: ["🍐", "🍐", "🍐"], multiplier: 1 },
-    { symbols: ["🍍", "🍍", "🍍"], multiplier: 1 },
-
-    // Add more winning combinations as needed
-];
-
+    // Show a message to the user
+    winningMessageElement.textContent = "You won     " + winAmount + "!";
+}
