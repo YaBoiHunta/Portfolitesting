@@ -47,8 +47,11 @@ function drawGrid() {
 
 // Function to calculate the next state of the grid
 function nextState() {
-  // Create a copy of the current state
-  const copy = JSON.parse(JSON.stringify(cells));
+  // Create a new array for the next state
+  const nextState = new Array(numRows);
+  for (let row = 0; row < numRows; row++) {
+    nextState[row] = new Array(numCols);
+  }
 
   for (let row = 0; row < numRows; row++) {
     for (let col = 0; col < numCols; col++) {
@@ -67,9 +70,11 @@ function nextState() {
 
       // Apply the rules of the Game of Life
       if (cells[row][col].alive && (neighbors < 2 || neighbors > 3)) {
-        copy[row][col].alive = false;
+        nextState[row][col] = { alive: false, row, col };
       } else if (!cells[row][col].alive && neighbors === 3) {
-        copy[row][col].alive = true;
+        nextState[row][col] = { alive: true, row, col };
+      } else {
+        nextState[row][col] = { alive: cells[row][col].alive, row, col };
       }
     }
   }
@@ -77,7 +82,7 @@ function nextState() {
   // Replace the current state with the new state
   for (let row = 0; row < numRows; row++) {
     for (let col = 0; col < numCols; col++) {
-      cells[row][col].alive = copy[row][col].alive;
+      cells[row][col] = nextState[row][col];
     }
   }
 
@@ -167,4 +172,96 @@ speedSlider.addEventListener('input', function() {
 
   // Start a new simulation with the new speed
   gameInterval = setInterval(nextState, speedSlider.value);
+});
+
+const patterns = {
+  glider: [
+    [false, true, false],
+    [false, false, true],
+    [true, true, true]
+  ],
+  blinker: [
+    [false, true, false],
+    [false, true, false],
+    [false, true, false]
+  ],
+  toad: [
+    [false, true, true, true],
+    [true, true, true, false]
+  ],
+  beacon: [
+    [true, true, false, false],
+    [true, true, false, false],
+    [false, false, true, true],
+    [false, false, true, true]
+  ],
+  pulsar: [
+    [false, false, true, true, true, false, false, false, true, true, true, false, false],
+    [false, false, false, false, false, false, false, false, false, false, false, false, false],
+    [true, false, false, false, false, true, false, true, false, false, false, false, true],
+    [true, false, false, false, false, true, false, true, false, false, false, false, true],
+    [true, false, false, false, false, true, false, true, false, false, false, false, true],
+    [false, false, true, true, true, false, false, false, true, true, true, false, false],
+    [false, false, false, false, false, false, false, false, false, false, false, false, false],
+    [false, false, true, true, true, false, false, false, true, true, true, false, false],
+    [true, false, false, false, false, true, false, true, false, false, false, false, true],
+    [true, false, false, false, false, true, false, true, false, false, false, false, true],
+    [true, false, false, false, false, true, false, true, false, false, false, false, true],
+    [false, false, false, false, false, false, false, false, false, false, false, false, false],
+    [false, false, true, true, true, false, false, false, true, true, true, false, false]
+  ],
+  gliderGun: [
+    // You can find the pattern for the Gosper Glider Gun online
+  ],
+  // Add more patterns here...
+};
+// Get a reference to the dropdown menu
+const patternSelect = document.getElementById('patternSelect');
+
+// Add an event listener to the dropdown menu
+patternSelect.addEventListener('change', function() {
+  // Get the selected pattern
+  const pattern = patterns[patternSelect.value];
+
+  // Place the pattern on the grid
+  for (let row = 0; row < pattern.length; row++) {
+    for (let col = 0; col < pattern[row].length; col++) {
+      cells[row][col].alive = pattern[row][col];
+    }
+  }
+
+  // Redraw the grid
+  drawGrid();
+});
+
+// Store the selected pattern
+let selectedPattern = null;
+
+// Update the selected pattern when the dropdown menu changes
+patternSelect.addEventListener('change', function() {
+  selectedPattern = patterns[patternSelect.value];
+});
+
+// Add a click event listener to the canvas
+canvas.addEventListener('click', function(event) {
+  // Calculate the row and column of the cell that was clicked
+  const rect = canvas.getBoundingClientRect();
+  const x = event.clientX - rect.left;
+  const y = event.clientY - rect.top;
+  const row = Math.floor(y / cellSize);
+  const col = Math.floor(x / cellSize);
+
+  // Place the selected pattern at the clicked position
+  if (selectedPattern) {
+    for (let i = 0; i < selectedPattern.length; i++) {
+      for (let j = 0; j < selectedPattern[i].length; j++) {
+        if (row + i < numRows && col + j < numCols) {
+          cells[row + i][col + j].alive = selectedPattern[i][j];
+        }
+      }
+    }
+  }
+
+  // Redraw the grid
+  drawGrid();
 });
