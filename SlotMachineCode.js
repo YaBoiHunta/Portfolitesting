@@ -13,14 +13,14 @@ let winningCombinations = [
     { symbols: ["🍊", "🍊", "🍊"], multiplier: 30 },
     { symbols: ["🍋", "🍋", "🍋"], multiplier: 20 },
     { symbols: ["🍒", "🍒", "🍒"], multiplier: 10 },
-    { symbols: ["🍇", "🍇", "🍇"], multiplier: 5 },
-    { symbols: ["🍉", "🍉", "🍉"], multiplier: 3 },
-    { symbols: ["🍓", "🍓", "🍓"], multiplier: 2 },
-    { symbols: [ "🍑", "🍑", "🍑"], multiplier: 1 },
-    { symbols: ["🍈", "🍈", "🍈"], multiplier: 1 },
-    { symbols: ["🍌", "🍌", "🍌"], multiplier: 1 },
-    { symbols: ["🍐", "🍐", "🍐"], multiplier: 1 },
-    { symbols: ["🍍", "🍍", "🍍"], multiplier: 1 },
+    { symbols: ["🍇", "🍇", "🍇"], multiplier: 10 },
+    { symbols: ["🍉", "🍉", "🍉"], multiplier: 50},
+    { symbols: ["🍓", "🍓", "🍓"], multiplier: 102 },
+    { symbols: [ "🍑", "🍑", "🍑"], multiplier: 120 },
+    { symbols: ["🍈", "🍈", "🍈"], multiplier: 100 },
+    { symbols: ["🍌", "🍌", "🍌"], multiplier: 90 },
+    { symbols: ["🍐", "🍐", "🍐"], multiplier: 80 },
+    { symbols: ["🍍", "🍍", "🍍"], multiplier: 70 },
 
     // Add more winning combinations as needed
 ];
