@@ -159,22 +159,13 @@ stopButton.addEventListener('click', function() {
   }
 });
 
-// Get a reference to the slider
-const speedSlider = document.getElementById('speedSlider');
 
-// Update the simulation speed when the slider value changes
-speedSlider.addEventListener('input', function() {
-  // Stop the current simulation
-  if (gameInterval !== null) {
-    clearInterval(gameInterval);
-    gameInterval = null;
-  }
-
-  // Start a new simulation with the new speed
-  gameInterval = setInterval(nextState, speedSlider.value);
-});
 
 const patterns = {
+  single: [
+    [true,],
+  ],
+
   glider: [
     [false, true, false],
     [false, false, true],
@@ -209,9 +200,6 @@ const patterns = {
     [true, false, false, false, false, true, false, true, false, false, false, false, true],
     [false, false, false, false, false, false, false, false, false, false, false, false, false],
     [false, false, true, true, true, false, false, false, true, true, true, false, false]
-  ],
-  gliderGun: [
-    // You can find the pattern for the Gosper Glider Gun online
   ],
   // Add more patterns here...
 };
@@ -265,3 +253,4 @@ canvas.addEventListener('click', function(event) {
   // Redraw the grid
   drawGrid();
 });
+

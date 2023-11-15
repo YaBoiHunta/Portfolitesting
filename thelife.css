@@ -1,0 +1,46 @@
+select {
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    background-color: #f8f8f8;
+    color: #555;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+select:focus {
+    outline: none;
+    border-color: #6ea1f1;
+    box-shadow: 0 0 10px rgba(110, 161, 241, 0.5);
+}
+
+select option {
+    padding: 30px;
+}
+
+LifeGameControls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    margin: 10px;
+}
+
+#LifeGameControls button {
+    flex: 1; /* This will make all buttons the same size */
+    height: 100%;
+    margin: 1 5px;
+    padding: 10px;
+    box-sizing: border-box; /* This will include padding and border in the element's total width and height */
+    border: 2px solid #ccc;
+    border-radius: 5px;
+
+}
+
+#Navbar {
+    box-sizing: border-box;
+    background-color: #6ea1f1;
+    width: 400px; /* This will make the navbar span the entire width of the screen */
+}
