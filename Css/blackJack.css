@@ -35,3 +35,95 @@
     background-color:  yellow;
 }
 
+.card {
+    background-color: #fff;
+    border: 1px solid #000;
+    padding: 10px;
+    width: 100px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+  }
+  
+  .card.hearts {
+    background-color: #f00;
+    color: #fff;
+  }
+  
+  .card.diamonds {
+    background-color: #ff0;
+    color: #000;
+  }
+  
+  .card.clubs {
+    background-color: #000;
+    color: #fff;
+  }
+  
+  .card.spades {
+    background-color: #000;
+    color: #fff;
+  }
+  
+  .card.value-ace {
+    content: 'A';
+  }
+  
+  .card.value-2 {
+    content: '2';
+  }
+  
+  .card.value-3 {
+    content: '3';
+  }
+  
+  .card.value-4 {
+    content: '4';
+  }
+  
+  .card.value-5 {
+    content: '5';
+  }
+  
+  .card.value-6 {
+    content: '6';
+  }
+  
+  .card.value-7 {
+    content: '7';
+  }
+  
+  .card.value-8 {
+    content: '8';
+  }
+  
+  .card.value-9 {
+    content: '9';
+  }
+  
+  .card.value-10 {
+    content: '10';
+  }
+  
+  .card.value-jack {
+    content: 'J';
+  }
+  
+  .card.value-queen {
+    content: 'Q';
+  }
+  
+  .card.value-king {
+    content: 'K';
+  }
+
+#deck {
+    border: 10px solid black;
+    padding: 10px;  
+    margin: 10px;
+    display: inline-block;
+    font-weight: 500;
+    background-color:  orange;
+}
