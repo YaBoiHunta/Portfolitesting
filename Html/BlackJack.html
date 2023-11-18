@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Nic  blackjack site.
-
     </title>
+    <link rel="stylesheet" href="/Css/blackJack.css">
+
 </head>
 
 <body>
@@ -22,22 +23,44 @@
             <li> <a href="BlackJack.html"> Black Jack </a> </li>
         </ul>
     </nav>
+<br>
 
-    <canvas id="blackJackTable"> </canvas> 
-    <canvas id="blackJackCards"> </canvas>
+<!-- Modify your HTML like this -->
+<div id="dealer-area">
+    <h2>Dealer's Hand</h2>
+    <div id="dealer-hand"></div>
+    <div id="dealerHandScore"></div>
+</div>
+<div id="player-area">
+    <h2>Player's Hand</h2>
+    <div id="player-hand"></div>
+    <div id="playerHandScore"></div>
+</div>
+
+
+
+
     <div id="bettingButtons">
-        <button id="hitButton">Hit</button>
-        <button id="standButton">Stand</button>
-        <button id="doubleDownButton">Double Down</button>
-        <button id="splitButton">Split</button>
-        <button id="surrenderButton">Surrender</button>
+        <!-- Add this to your HTML -->
+        <p id="CurrentBet">Current Bet: <span id="playerBet">0</span></p>
+        <p id="blackJackBalance">Current Balance: <span id="CurrentBalanceAmount">1000</span></p>
+        <button type="submit" id="start-button">Start Game</button>
+        
+        <button type="submit" id="hitButton">Hit</button>
+        <button type="submit" id="standButton">Stand</button>
+        
+        <button type="submit" id="resetButton">reset Button </button>
     </div>
-    <div id="blackJackBalance">
-        <p>Balance: </p>
-        <p id="blackJackBalanceAmount">1000</p>
+    <div id="bettingArea">
+        <button type="submit" id="placeBetButton">Bet</button>
+        <input type="number" id="betInput" placeholder="Bet Amount">
     </div>
 
-    <script src="/Portfolitesting/js/BlackJack.js"></script>
+   
+    <div id="deck"></div>
+
+    <script src="/js/BlackJack.js"></script>
+
     
 </body>
 </html>
