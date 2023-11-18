@@ -125,5 +125,26 @@
     margin: 10px;
     display: inline-block;
     font-weight: 500;
-    background-color:  orange;
+    background-color: green;
+    size: 0caps;
+    
+
+}
+
+/* Add this to your CSS */
+#dealer-hand, #player-hand {
+  padding: 20px;
+}
+
+.card {
+  margin: 10px;
+}
+/* Add this to your CSS */
+#dealer-hand, #player-hand {
+  padding: 20px;
+  border: 1px solid black;
+}
+
+.card {
+  margin: 10px;
 }

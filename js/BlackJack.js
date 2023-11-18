@@ -1,56 +1,36 @@
-// Array of card suits
 const suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
-
-// Array of card values
 const values = ['Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King'];
 
-/**
- * Function to create a card element.
- * @param {string} suit - The suit of the card.
- * @param {string} value - The value of the card.
- * @returns {object} - The card element.
- */
-const createCardElement = (suit, value) => {
+const dealerScoreElement = document.getElementById('dealerHandScore');
+const playerScoreElement = document.getElementById('playerHandScore');
+
+const dealerHandContainer = document.getElementById('dealer-hand');
+const playerHandContainer = document.getElementById('player-hand');
+
+const startButton = document.getElementById('start-button');
+const hitButton = document.getElementById('hitButton');
+const standButton = document.getElementById('standButton');
+
+startButton.addEventListener('click', startGame);
+hitButton.addEventListener('click', handleHit);
+standButton.addEventListener('click', handleStand);
+
+let playerHand;
+let dealerHand;
+
+function createCardElement(suit, value) {
     const cardElement = document.createElement('div');
     cardElement.classList.add('card');
     cardElement.classList.add(suit.toLowerCase());
     cardElement.classList.add(`value-${value}`);
     cardElement.textContent = `${value} of ${suit}`;
     return cardElement;
-};
-
-// Array to hold the deck of cards
-const deck = [];
-
-// Loop through each suit
-for (const suit of suits) {
-    // Loop through each value
-    for (const value of values) {
-        // Push a new card element to the deck
-        deck.push(createCardElement(suit, value));
-    }
 }
 
-// Get the deck container element
-const deckContainer = document.getElementById('deck');
-
-// Append each card element to the deck container
-for (const cardElement of deck) {
-    deckContainer.appendChild(cardElement);
-}
-
-// Assign numerical values to the cards
-const cardValues = {
-    'Ace': 11, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10,
-    'Jack': 10, 'Queen': 10, 'King': 10
-};
-
-// Function to deal a card
 function dealCard(deck) {
     return deck.splice(Math.floor(Math.random() * deck.length), 1)[0];
 }
 
-// Function to calculate the score of a hand
 function calculateScore(hand) {
     let score = hand.reduce((sum, card) => sum + cardValues[card.value], 0);
     let aces = hand.filter(card => card.value === 'Ace').length;
@@ -61,19 +41,16 @@ function calculateScore(hand) {
     return score;
 }
 
-// Function to determine if a hand is busted
 function isBusted(hand) {
     return calculateScore(hand) > 21;
 }
 
-// Function to handle the player's turn
 function playerTurn(deck, hand) {
     let card = dealCard(deck);
     hand.push(card);
     return hand;
 }
 
-// Function to handle the dealer's turn
 function dealerTurn(deck, hand) {
     while (calculateScore(hand) < 17) {
         hand.push(dealCard(deck));
@@ -81,7 +58,6 @@ function dealerTurn(deck, hand) {
     return hand;
 }
 
-// Function to determine the winner
 function determineWinner(playerHand, dealerHand) {
     const playerScore = calculateScore(playerHand);
     const dealerScore = calculateScore(dealerHand);
@@ -92,24 +68,19 @@ function determineWinner(playerHand, dealerHand) {
     return 'Draw';
 }
 
-// Function to start a new game
 function startGame() {
-    let deck = createDeck();
-    let playerHand = [dealCard(deck), dealCard(deck)];
-    let dealerHand = [dealCard(deck), dealCard(deck)];
-    // Continue with the game...
-}
+    hitButton.disabled = false;
+    standButton.disabled = false;
 
-// Add this to your JavaScript
-const startButton = document.getElementById('start-button');
-
-startButton.addEventListener('click', () => {
-    // Clear the deck container
-    while (deckContainer.firstChild) {
-        deckContainer.removeChild(deckContainer.firstChild);
+    while (dealerHandContainer.firstChild) {
+        dealerHandContainer.removeChild(dealerHandContainer.firstChild);
     }
+    while (playerHandContainer.firstChild) {
+        playerHandContainer.removeChild(playerHandContainer.firstChild);
+    }
+    dealerScoreElement.textContent = '';
+    playerScoreElement.textContent = '';
 
-    // Start a new game and deal the cards
     const deck = [];
     for (const suit of suits) {
         for (const value of values) {
@@ -117,17 +88,42 @@ startButton.addEventListener('click', () => {
         }
     }
 
-    const playerHand = [dealCard(deck), dealCard(deck)];
-    const dealerHand = [dealCard(deck), dealCard(deck)];
+    playerHand = [dealCard(deck), dealCard(deck)];
+    dealerHand = [dealCard(deck), dealCard(deck)];
 
-    // Display the dealt cards
     for (const card of playerHand) {
-        deckContainer.appendChild(createCardElement(card.suit, card.value));
+        playerHandContainer.appendChild(createCardElement(card.suit, card.value));
     }
     for (const card of dealerHand) {
-        deckContainer.appendChild(createCardElement(card.suit, card.value));
+        dealerHandContainer.appendChild(createCardElement(card.suit, card.value));
     }
-});
+    playerScoreElement.textContent = `Score: ${calculateScore(playerHand)}`;
+    dealerScoreElement.textContent = `Score: ${calculateScore(dealerHand)}`;
+}
 
+function handleHit() {
+    playerHand = playerTurn(deck, playerHand);
+    playerHandContainer.appendChild(createCardElement(playerHand[playerHand.length - 1].suit, playerHand[playerHand.length - 1].value));
+    playerScoreElement.textContent = `Score: ${calculateScore(playerHand)}`;
+    if (isBusted(playerHand)) {
+        dealerScoreElement.textContent += ' - Player busted!';
+        hitButton.disabled = true;
+        standButton.disabled = true;
+    }
+}
 
-    
+function handleStand() {
+    dealerHand = dealerTurn(deck, dealerHand);
+    while (dealerHandContainer.firstChild) {
+        dealerHandContainer.removeChild(dealerHandContainer.firstChild);
+    }
+    for (const card of dealerHand) {
+        dealerHandContainer.appendChild(createCardElement(card.suit, card.value));
+    }
+    dealerScoreElement.textContent = `Score: ${calculateScore(dealerHand)}`;
+    if (isBusted(dealerHand)) {
+        dealerScoreElement.textContent += ' - Dealer busted!';
+    }
+    hitButton.disabled = true;
+    standButton.disabled = true;
+}

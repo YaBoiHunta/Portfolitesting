@@ -25,9 +25,17 @@
     </nav>
 <br>
 
-<!-- Add these to your HTML -->
-<div id="dealer-hand"></div>
-<div id="player-hand"></div>
+<!-- Modify your HTML like this -->
+<div id="dealer-area">
+    <h2>Dealer's Hand</h2>
+    <div id="dealer-hand"></div>
+    <div id="dealerHandScore"></div>
+</div>
+<div id="player-area">
+    <h2>Player's Hand</h2>
+    <div id="player-hand"></div>
+    <div id="playerHandScore"></div>
+</div>
 
 
 
@@ -35,6 +43,7 @@
     <div id="bettingButtons">
         <!-- Add this to your HTML -->
         <button type="submit" id="start-button">Start Game</button>
+        
         <button type="submit" id="hitButton">Hit</button>
         <button type="submit" id="standButton">Stand</button>
         <button type="submit" id="doubleDownButton">Double Down</button>
