@@ -42,18 +42,21 @@
 
     <div id="bettingButtons">
         <!-- Add this to your HTML -->
+        <p id="CurrentBet">Current Bet: <span id="playerBet">0</span></p>
+        <p id="blackJackBalance">Current Balance: <span id="CurrentBalanceAmount">1000</span></p>
         <button type="submit" id="start-button">Start Game</button>
         
         <button type="submit" id="hitButton">Hit</button>
         <button type="submit" id="standButton">Stand</button>
-        <button type="submit" id="doubleDownButton">Double Down</button>
-        <button type="submit" id="splitButton">Split</button>
-        <button type="submit" id="surrenderButton">Surrender</button>
+        
+        <button type="submit" id="resetButton">reset Button </button>
     </div>
-    <div id="blackJackBalance">
-        <p>Balance: </p>
-        <p id="blackJackBalanceAmount">1000</p>
+    <div id="bettingArea">
+        <button type="submit" id="placeBetButton">Bet</button>
+        <input type="number" id="betInput" placeholder="Bet Amount">
     </div>
+
+   
     <div id="deck"></div>
 
     <script src="/js/BlackJack.js"></script>

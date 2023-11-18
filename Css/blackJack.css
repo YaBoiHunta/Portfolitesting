@@ -8,14 +8,6 @@
 
 }
 
-#blackJackTable {
-    border: 10px solid black;
-    padding: 10px;  
-    margin: 10px;
-    display: inline-block;
-    font-weight: 500;
-    background-color:  green;
-}
 
 #blackJackCards {
     border: 10px solid black;
@@ -31,8 +23,9 @@
     padding: 10px;  
     margin: 10px;
     display: inline-block;
-    font-weight: 500;
-    background-color:  yellow;
+    font-weight: 
+    900;
+    background-color: purple;
 }
 
 .card {
@@ -42,8 +35,8 @@
     width: 100px;
     height: 150px;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: right;
+    align-items: right;
     font-size: 24px;
   }
   
@@ -142,7 +135,8 @@
 /* Add this to your CSS */
 #dealer-hand, #player-hand {
   padding: 20px;
-  border: 1px solid black;
+  border: px solid black;
+  display: flex;
 }
 
 .card {

@@ -10,6 +10,16 @@ const playerHandContainer = document.getElementById('player-hand');
 const startButton = document.getElementById('start-button');
 const hitButton = document.getElementById('hitButton');
 const standButton = document.getElementById('standButton');
+// Add these variables to your JavaScript
+let playerMoney = 1000;
+let playerBet = 0;
+
+const playerMoneyElement = document.getElementById('blackJackBalance');
+const betInput = document.getElementById('betInput');
+const placeBetButton = document.getElementById('placeBetButton');
+const playerBetElement = document.getElementById('playerBet');
+
+let deck = [];
 
 startButton.addEventListener('click', startGame);
 hitButton.addEventListener('click', handleHit);
@@ -17,6 +27,23 @@ standButton.addEventListener('click', handleStand);
 
 let playerHand;
 let dealerHand;
+
+placeBetButton.addEventListener('click', placeBet);
+
+function updateBetDisplay() {
+    playerBetElement.textContent = `Bet: $${playerBet}`;
+}
+
+function createDeck() {
+    const deck = [];
+    for (const suit of suits) {
+        for (const value of values) {
+            deck.push({ suit, value });
+        }
+    }
+    deck.sort(() => Math.random() - 0.5);
+    return deck;
+}
 
 function createCardElement(suit, value) {
     const cardElement = document.createElement('div');
@@ -32,7 +59,7 @@ function dealCard(deck) {
 }
 
 function calculateScore(hand) {
-    let score = hand.reduce((sum, card) => sum + cardValues[card.value], 0);
+    let score = hand.reduce((sum, card) => sum + (values.indexOf(card.value) + 1), 0);
     let aces = hand.filter(card => card.value === 'Ace').length;
     while (score > 21 && aces > 0) {
         score -= 10;
@@ -61,51 +88,71 @@ function dealerTurn(deck, hand) {
 function determineWinner(playerHand, dealerHand) {
     const playerScore = calculateScore(playerHand);
     const dealerScore = calculateScore(dealerHand);
-    if (playerScore > 21) return 'Dealer';
-    if (dealerScore > 21) return 'Player';
-    if (playerScore > dealerScore) return 'Player';
-    if (dealerScore > playerScore) return 'Dealer';
-    return 'Draw';
+    if (playerScore > 21) {
+        return 'Dealer';
+    } else if (dealerScore > 21) {
+        return 'Player';
+    } else if (playerScore > dealerScore) {
+        return 'Player';
+    } else if (dealerScore > playerScore) {
+        return 'Dealer';
+    } else {
+        return 'Draw';
+    }
 }
 
 function startGame() {
-    hitButton.disabled = false;
-    standButton.disabled = false;
-
-    while (dealerHandContainer.firstChild) {
-        dealerHandContainer.removeChild(dealerHandContainer.firstChild);
-    }
-    while (playerHandContainer.firstChild) {
-        playerHandContainer.removeChild(playerHandContainer.firstChild);
-    }
-    dealerScoreElement.textContent = '';
-    playerScoreElement.textContent = '';
-
-    const deck = [];
-    for (const suit of suits) {
-        for (const value of values) {
-            deck.push({ suit, value });
-        }
+     // Check if the player's bet is more than their money
+     if (playerBet > playerMoney) {
+        alert('You cannot bet more money than you have!');
+        return;
     }
 
-    playerHand = [dealCard(deck), dealCard(deck)];
-    dealerHand = [dealCard(deck), dealCard(deck)];
+    // Reset hands and scores
+    clearHandContainers();
 
-    for (const card of playerHand) {
-        playerHandContainer.appendChild(createCardElement(card.suit, card.value));
-    }
-    for (const card of dealerHand) {
-        dealerHandContainer.appendChild(createCardElement(card.suit, card.value));
-    }
+    playerHand = [];
+    dealerHand = [];
+    playerScoreElement.textContent = 'Score: 0';
+    dealerScoreElement.textContent = 'Score: 0';
+
+    // Create and shuffle deck
+    deck = createDeck();
+
+    // Deal initial cards
+    playerHand = playerTurn(deck, playerHand);
+    dealerHand = playerTurn(deck, dealerHand);
+
+    // Display initial cards
+    playerHandContainer.appendChild(createCardElement(playerHand[0].suit, playerHand[0].value));
+    dealerHandContainer.appendChild(createCardElement(dealerHand[0].suit, dealerHand[0].value));
+
+    // Update scores
     playerScoreElement.textContent = `Score: ${calculateScore(playerHand)}`;
     dealerScoreElement.textContent = `Score: ${calculateScore(dealerHand)}`;
+
+    // Enable "Hit" and "Stand" buttons
+    hitButton.disabled = false;
+    standButton.disabled = false;
 }
 
 function handleHit() {
-    playerHand = playerTurn(deck, playerHand);
-    playerHandContainer.appendChild(createCardElement(playerHand[playerHand.length - 1].suit, playerHand[playerHand.length - 1].value));
+    // Deal a new card to the player and add it to their hand
+    const newCard = dealCard(deck);
+    playerHand.push(newCard);
+
+    // Create a new card element for the dealt card
+    const newCardElement = createCardElement(newCard.suit, newCard.value);
+
+    // Append the new card element to the player's hand container
+    playerHandContainer.appendChild(newCardElement);
+
+    // Update the player's score display
     playerScoreElement.textContent = `Score: ${calculateScore(playerHand)}`;
+
+    // Check if the player's hand is busted
     if (isBusted(playerHand)) {
+        // If the player's hand is busted, display a message and disable the "Hit" and "Stand" buttons
         dealerScoreElement.textContent += ' - Player busted!';
         hitButton.disabled = true;
         standButton.disabled = true;
@@ -113,17 +160,126 @@ function handleHit() {
 }
 
 function handleStand() {
+    // Play out the dealer's turn
     dealerHand = dealerTurn(deck, dealerHand);
+
+    // Update the dealer's hand display
     while (dealerHandContainer.firstChild) {
         dealerHandContainer.removeChild(dealerHandContainer.firstChild);
     }
     for (const card of dealerHand) {
         dealerHandContainer.appendChild(createCardElement(card.suit, card.value));
     }
+
+    // Update the dealer's score display
     dealerScoreElement.textContent = `Score: ${calculateScore(dealerHand)}`;
+
+    // Check if the dealer's hand is busted
     if (isBusted(dealerHand)) {
         dealerScoreElement.textContent += ' - Dealer busted!';
     }
+
+    // Determine the winner
+    const winner = determineWinner(playerHand, dealerHand);
+    dealerScoreElement.textContent += ` - ${winner} wins!`;
+
+    // Disable the "Hit" and "Stand" buttons
     hitButton.disabled = true;
     standButton.disabled = true;
 }
+function updateMoneyAndBetDisplays() {
+    playerMoneyElement.textContent = `Money: $${playerMoney}`;
+    playerBetElement.textContent = `Bet: $${playerBet}`;
+}
+
+function placeBet() {
+    // Get the bet amount from the input
+    const betAmount = Number(betInput.value);
+
+    // Check if the bet amount is valid
+    if (betAmount > playerMoney) {
+        alert('You cannot bet more money than you have!');
+        return;
+    } else if (betAmount <= 0) {
+        alert('You must bet a positive amount!');
+        return;
+    }
+
+    // Update the player's money and bet amounts
+    playerMoney -= betAmount;
+    playerBet = betAmount;
+
+    updateBetDisplay();
+
+    // Update the money and bet displays
+    updateMoneyAndBetDisplays();
+
+    // Clear the bet input field
+    betInput.value = '';
+}
+
+function handleStand() {
+    // Play out the dealer's turn
+    dealerHand = dealerTurn(deck, dealerHand);
+
+    // Update the dealer's hand display
+    while (dealerHandContainer.firstChild) {
+        dealerHandContainer.removeChild(dealerHandContainer.firstChild);
+    }
+    for (const card of dealerHand) {
+        dealerHandContainer.appendChild(createCardElement(card.suit, card.value));
+    }
+
+    // Update the dealer's score display
+    dealerScoreElement.textContent = `Score: ${calculateScore(dealerHand)}`;
+
+    // Check if the dealer's hand is busted
+    if (isBusted(dealerHand)) {
+        dealerScoreElement.textContent += ' - Dealer busted!';
+    }
+
+    // Determine the winner
+    const winner = determineWinner(playerHand, dealerHand);
+    dealerScoreElement.textContent += ` - ${winner} wins!`;
+
+    // Update the player's money based on the result
+    if (winner === 'Player') {
+        playerMoney += playerBet * 2;
+    }
+    playerBet = 0;
+
+    // Update the money and bet displays
+    updateMoneyAndBetDisplays();
+
+    // Disable the "Hit" and "Stand" buttons
+    hitButton.disabled = true;
+    standButton.disabled = true;
+}
+
+
+function clearHandContainers() {
+    while (playerHandContainer.firstChild) {
+        playerHandContainer.removeChild(playerHandContainer.firstChild);
+    }
+    while (dealerHandContainer.firstChild) {
+        dealerHandContainer.removeChild(dealerHandContainer.firstChild);
+    }
+}
+
+
+function resetGame() {
+    // Reset player's money and bet
+    playerMoney = 1000;
+    playerBet = 0;
+
+    // Clear the hand containers
+    clearHandContainers();
+
+    // Enable the "Hit" and "Stand" buttons
+    hitButton.disabled = false;
+    standButton.disabled = false;
+
+    // Update the money and bet displays
+    updateMoneyAndBetDisplays();
+}
+
