@@ -59,12 +59,23 @@ function dealCard(deck) {
 }
 
 function calculateScore(hand) {
-    let score = hand.reduce((sum, card) => sum + (values.indexOf(card.value) + 1), 0);
+    let score = hand.reduce((sum, card) => {
+        if (card.value === 'Ace') {
+            return sum + 11;
+        } else if (['Jack', 'Queen', 'King'].includes(card.value)) {
+            return sum + 10;
+        } else {
+            return sum + parseInt(card.value);
+        }
+    }, 0);
+    
     let aces = hand.filter(card => card.value === 'Ace').length;
+    
     while (score > 21 && aces > 0) {
         score -= 10;
         aces--;
     }
+    
     return score;
 }
 
@@ -283,3 +294,68 @@ function resetGame() {
     updateMoneyAndBetDisplays();
 }
 
+function startGame() {
+    // Check if the player's bet is more than their money
+    if (playerBet > playerMoney) {
+        alert('You cannot bet more money than you have!');
+        return;
+    }
+
+    // Deduct the bet amount from the player's money
+    playerMoney -= playerBet;
+
+    // Reset hands and scores
+    clearHandContainers();
+
+    playerHand = [];
+    dealerHand = [];
+    playerScoreElement.textContent = 'Score: 0';
+    dealerScoreElement.textContent = 'Score: 0';
+
+    // Create and shuffle deck
+    deck = createDeck();
+
+    // Deal initial cards
+    playerHand = playerTurn(deck, playerHand);
+    dealerHand = playerTurn(deck, dealerHand);
+
+    // Display initial cards
+    playerHandContainer.appendChild(createCardElement(playerHand[0].suit, playerHand[0].value));
+    dealerHandContainer.appendChild(createCardElement(dealerHand[0].suit, dealerHand[0].value));
+
+    // Update scores
+    playerScoreElement.textContent = `Score: ${calculateScore(playerHand)}`;
+    dealerScoreElement.textContent = `Score: ${calculateScore(dealerHand)}`;
+
+    // Enable "Hit" and "Stand" buttons
+    hitButton.disabled = false;
+    standButton.disabled = false;
+}
+
+function placeBet() {
+    // Get the bet amount from the input
+    const betAmount = Number(betInput.value);
+
+    // Check if the bet amount is valid
+    if (betAmount > playerMoney) {
+        alert('You cannot bet more money than you have!');
+        return;
+    } else if (betAmount <= 0) {
+        alert('You must bet a positive amount!');
+        return;
+    }
+
+    // Set the player's bet amount
+    playerBet = betAmount;
+
+    // Deduct the bet amount from the player's money
+    playerMoney -= playerBet;
+
+    updateBetDisplay();
+
+    // Update the money and bet displays
+    updateMoneyAndBetDisplays();
+
+    // Clear the bet input field
+    betInput.value = '';
+}
