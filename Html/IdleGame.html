@@ -5,18 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title> Hunters idle game </title>
-    <link rel="stylesheet" href="/Css/style.css">
+    <link rel="stylesheet" href="/Css/IdleGame.css">
     
 </head>
 <body>
-    <canvas>
-
+    <div class="game-container">
+    <canvas id="idleGameCanvas" width="800" height="600">
+    </div>
     </canvas>
+    <div id="idleGameButtons">
     <button type="submit" id="button1" onclick="buttonClicked(1)">Button 1</button>
     <button type="submit" id="button2" onclick="buttonClicked(2)">Button 2</button>
     <button type="submit" id="button3" onclick="buttonClicked(3)">Button 3</button>
     <button type="submit" id="button4" onclick="buttonClicked(4)">Button 4</button>
     <button type="submit" id="button5" onclick="buttonClicked(5)">Button 5</button>
+    </div>
+    
 <br>
 <nav id="Navbar">
     <ul>
