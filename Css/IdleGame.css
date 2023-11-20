@@ -10,15 +10,20 @@
 
 }
 
-.game-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
- 
 #GatheringButtons {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+        /*
+        Center these buttons in the middle of the screen below the game canvas.  */
+        position: absolute;
+        left: 50%;
+        bottom: 0%;
+        transform: translate(-50%, -50%);
+        margin: 0 auto;
+        transform: matrix(5, 3, 1, 12, 1, 11);
+         
+
 }
 
+#userResources {
+    color: fuchsia;
+    font-size: 40px;
+}
