@@ -1,0 +1,34 @@
+/*  Setup the outside of the games canvas html element border. */
+
+#idleGameCanvas {
+    border: 1px solid black;
+    margin: 0 auto;
+    width: 1000px;
+    height: 500px;
+    background-color: gray;
+
+
+}
+
+#GatheringButtons {
+        /*
+        Center these buttons in the middle of the screen below the game canvas.  */
+        position: absolute;
+        left: 50%;
+        bottom: 0%;
+        transform: translate(-50%, -50%);
+        margin: 0 auto;
+        transform: matrix(5, 3, 1, 12, 1, 11);
+         
+
+}
+
+#userResources {
+    color: fuchsia;
+    font-size: 40px;
+}
+
+#userUpgrades {
+    color: fuchsia;
+    font-size: 20px;
+}

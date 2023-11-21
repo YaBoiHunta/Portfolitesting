@@ -5,18 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title> Hunters idle game </title>
-    <link rel="stylesheet" href="/Css/style.css">
+    <link rel="stylesheet" href="/Css/IdleGame.css">
     
 </head>
 <body>
-    <canvas>
-
+    <div class="game-container">
+    <canvas id="idleGameCanvas" width="800" height="600">
+   
     </canvas>
-    <button type="submit" id="button1" onclick="buttonClicked(1)">Button 1</button>
-    <button type="submit" id="button2" onclick="buttonClicked(2)">Button 2</button>
-    <button type="submit" id="button3" onclick="buttonClicked(3)">Button 3</button>
-    <button type="submit" id="button4" onclick="buttonClicked(4)">Button 4</button>
-    <button type="submit" id="button5" onclick="buttonClicked(5)">Button 5</button>
+</div>
+<br>
+
+    <div class="GatheringButtons" id="GatheringButtons"> 
+    <button id="chopButton">Chop</button>
+    <button id="mineButton">Mine</button>
+    <button id="waterButton">Water</button>
+    <button id="huntButton">Hunt</button>
+    </div>
+
+    <div id="userResources">
+        <h2>Resources</h2>
+        <p id="wood">Wood: <span id="woodCount">0</span></p>
+        <p id="stone">Stone: <span id="stoneCount">0</span></p>
+        <p id="water">Water: <span id="waterCount">0</span></p>
+        <p id="food">Food: <span id="foodCount">0</span></p>
+    </div>
+
+    <div id="userUpgrades">
+        <h2>Upgrades</h2>
+        <p>Wood Upgrade: <span id="woodUpgradeCount">0</span> (Cost: <span id="woodUpgradeCost">10</span>)</p>
+        <button id="woodUpgradeButton">Upgrade</button>
+        <p>Stone Upgrade: <span id="stoneUpgradeCount">0</span> (Cost: <span id="stoneUpgradeCost">10</span>)</p>
+        <button id="stoneUpgradeButton">Upgrade</button>
+        <p>Water Upgrade: <span id="waterUpgradeCount">0</span> (Cost: <span id="waterUpgradeCost">10</span>)</p>
+        <button id="waterUpgradeButton">Upgrade</button>
+        <p>Food Upgrade: <span id="foodUpgradeCount">0</span> (Cost: <span id="foodUpgradeCost">10</span>)</p>
+        <button id="foodUpgradeButton">Upgrade</button>
+    </div>
+
 <br>
 <nav id="Navbar">
     <ul>
@@ -26,10 +52,8 @@
         <li> <a href="IdleGame.html"> Idle Game </a> </li>
         <li> <a href="GameofLife.html"> Game of Life </a> </li>
         <li> <a href="BlackJack.html"> Black Jack </a> </li>
-        
-
     </ul>
 </nav>
-
+<script src="/js/Idlegame.js"> </script>
 </body>
 </html>
