@@ -8,8 +8,9 @@ Trying to learn to set this stuff up and move things around and etc. Hopefully t
 
 ## Site
 
-I need to find a host or something.
+I need to find a host or something. Or atleast get a domain i guess?
+
+money ?$$?$??
 
 ## About
-
-Yeah i don't know what to put here. Something. Hi jose if you read this, thanks for the help and connections.
+Okay, i think i figured out how to keep thing in sync with git, or atleast understanding the basics of it. 
